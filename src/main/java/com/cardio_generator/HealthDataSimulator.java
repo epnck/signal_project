@@ -55,7 +55,7 @@ public class HealthDataSimulator {
      * The main method to run the Health Data Simulator.
      *
      * @param args The command line arguments.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      **/
     public static void main(String[] args) throws IOException {
 
@@ -72,9 +72,18 @@ public class HealthDataSimulator {
     /**
      * This method parses the command line arguments to determine patient count
      * and the output type.
+     * <p>
+     * If an invalid number of patients is entered, the default value will be used.
+     * </p>
+     * <p>
+     * Output type should be console, file, WebSocket, or TCP socket.
+     * If an invalid console type is selected, the console will be used.
+     * If either WebSocket, or TCP socket are selected, the user will be asked to
+     * enter a valid port.
+     * </p>
      *
      * @param args The command line arguments.
-     * @throws IOException if an I/O error occurs.
+     * @throws IOException If an I/O error occurs.
      */
     private static void parseArguments(String[] args) throws IOException {
         for (int i = 0; i < args.length; i++) {
@@ -162,8 +171,7 @@ public class HealthDataSimulator {
      * The first patient will have an ID of 1, the ID number is incremented for each patient.
      *
      * @param patientCount The number of patients.
-     * @return A list with all the patient IDs in increasing order. The list has a length that is
-     * equal to the number of patients.
+     * @return A list with all the patient IDs in increasing order with length of patientCount.
      */
     private static List<Integer> initializePatientIds(int patientCount) {
         List<Integer> patientIds = new ArrayList<>();
