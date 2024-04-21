@@ -162,7 +162,8 @@ public class HealthDataSimulator {
      * The first patient will have an ID of 1, the ID number is incremented for each patient.
      *
      * @param patientCount The number of patients.
-     * @return A list with all the patient IDs in increasing order.
+     * @return A list with all the patient IDs in increasing order. The list has a length that is
+     * equal to the number of patients.
      */
     private static List<Integer> initializePatientIds(int patientCount) {
         List<Integer> patientIds = new ArrayList<>();
@@ -198,7 +199,7 @@ public class HealthDataSimulator {
      *
      * @param task The task to be scheduled.
      * @param period The length of the task.
-     * @param timeUnit The time unit of the period.
+     * @param timeUnit The time unit of the period. Either seconds or minutes.
      */
     private static void scheduleTask(Runnable task, long period, TimeUnit timeUnit) {
         scheduler.scheduleAtFixedRate(task, random.nextInt(5), period, timeUnit);
