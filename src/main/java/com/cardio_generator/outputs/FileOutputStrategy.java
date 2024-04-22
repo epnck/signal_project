@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The FileOutputStrategy class represents an output strategy that writes data into files.
- * It creates a file that contains all relevant data of patients.
+ * It creates a file given a base directory that contains all relevant data of patients.
  * For each patient this consists of patient ID, the timestamp when the data was taken,
  * the label of the data, and the actual health data.
  * <p>

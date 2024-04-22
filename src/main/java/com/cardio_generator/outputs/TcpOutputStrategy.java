@@ -6,6 +6,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Executors;
 
+/**
+ * The TcpOutputStrategy class represents an output strategy that sends patient data over tcp.
+ * For each patient this data consists of patient ID, the timestamp when the data was taken,
+ * the label of the data, and the actual health data.
+ * This class implements the OutputStrategy interface.
+ *
+ * @author Tom Pepels
+ */
+
 public class TcpOutputStrategy implements OutputStrategy {
 
     private ServerSocket serverSocket;
