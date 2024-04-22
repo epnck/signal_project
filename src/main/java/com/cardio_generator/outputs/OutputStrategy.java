@@ -6,6 +6,8 @@ package com.cardio_generator.outputs;
  * <p>
  * Data can be outputted in either console, file, WebSocket, or TCP socket.
  * </p>
+ *
+ * @author Tom Pepels
  */
 public interface OutputStrategy {
     /**
