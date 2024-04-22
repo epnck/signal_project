@@ -21,6 +21,11 @@ public class TcpOutputStrategy implements OutputStrategy {
     private Socket clientSocket;
     private PrintWriter out;
 
+    /**
+     * Constructs a new TcpOutputStrategy that listens on the specified port.
+     *
+     * @param port The port on which the TCP server will listen for client connections.
+     */
     public TcpOutputStrategy(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -41,6 +46,14 @@ public class TcpOutputStrategy implements OutputStrategy {
         }
     }
 
+    /**
+     * Outputs the provided data for a specified patient over the established TCP connection.
+     *
+     * @param patientId The ID of the patient.
+     * @param timestamp The timestamp of the data.
+     * @param label The label associated with the data.
+     * @param data The data to be sent over the TCP connection.
+     */
     @Override
     public void output(int patientId, long timestamp, String label, String data) {
         if (out != null) {
