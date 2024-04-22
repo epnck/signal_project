@@ -53,6 +53,8 @@ public class HealthDataSimulator {
 
     /**
      * The main method to run the Health Data Simulator.
+     * It initializes a list with all the patient IDs which is then shuffled to randomize the order.
+     * Tasks are then scheduled for each patient.
      *
      * @param args The command line arguments.
      * @throws IOException If an I/O error occurs.
