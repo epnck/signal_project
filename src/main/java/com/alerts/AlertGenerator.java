@@ -46,21 +46,32 @@ public class AlertGenerator {
 
 
         BloodPressureMonitor bloodPressureMonitor = new BloodPressureMonitor();
+        BloodSaturationMonitor bloodSaturationMonitor = new BloodSaturationMonitor();
         HypotensiveHypoxemiaMonitor hypotensiveHypoxemiaMonitor = new HypotensiveHypoxemiaMonitor();
 
 
         for (PatientRecord record : patientRecords){
             long timeStamp = record.getTimestamp();
 
-            //data generated with the blood pressure generator is categorized under diastolic and systolic, not under the general label "blood pressure"
-            //blood pressure validation
-            if(record.getRecordType().equals("DiastolicPressure")){
-               bloodPressureMonitor.validateData(record);
+            //add record to the correct monitor
+            switch (record.getRecordType()) {
+                //data generated with the blood pressure generator is categorized under diastolic and systolic, not under the general label "blood pressure"
+                case "DiastolicPressure":
+                    bloodPressureMonitor.validateData(record);
+                    break;
+                case "SystolicPressure":
+                    bloodPressureMonitor.validateData(record);
+                    hypotensiveHypoxemiaMonitor.validateData(record);
+                    break;
+                case "BloodSaturation":
+                    bloodSaturationMonitor.validateData(record);
+                    hypotensiveHypoxemiaMonitor.validateData(record);
+                    break;
+                case "ECG":
 
-            } else if (record.getRecordType().equals("SystolicPressure")) {
-                bloodPressureMonitor.validateData(record);
-                hypotensiveHypoxemiaMonitor.validateData(record);
             }
+
+
 
             switch (bloodPressureMonitor.getState()) {
                 case TREND_ALERT:
@@ -70,6 +81,17 @@ public class AlertGenerator {
                 case CRITICAL_ALERT:
                     triggerAlert(new Alert(patientID, "Blood Pressure Critical Threshold Surpassed", timeStamp));
                     bloodPressureMonitor.resetState();
+                    break;
+            }
+
+            switch (bloodSaturationMonitor.getState()){
+                case LOW_SATURATION_ALERT:
+                    triggerAlert(new Alert(patientID, "Low Blood Saturation Alert", timeStamp));
+                    bloodSaturationMonitor.resetState();
+                    break;
+                case RAPID_DROP_ALERT:
+                    triggerAlert(new Alert(patientID, "Rapid Drop in Blood Saturation Alert", timeStamp));
+                    bloodSaturationMonitor.resetState();
                     break;
             }
 

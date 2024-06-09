@@ -11,6 +11,7 @@ public class BloodPressureMonitor implements HealthDataMonitor{
       TREND_ALERT,
        CRITICAL_ALERT,
 
+
     }
     private State state = State.NORMAL;
     List<Double> diastolicReadings = new ArrayList<>();
