@@ -88,7 +88,7 @@ public class DataStorage {
         DataReader reader = new FileDataReader("path/to/data");
         DataStorage storage = new DataStorage();
 
-        reader.readData(storage);
+        reader.startReading(storage);
 
         // Example of using DataStorage to retrieve and print records for a patient
         List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);

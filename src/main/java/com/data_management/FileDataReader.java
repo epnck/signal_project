@@ -12,7 +12,7 @@ public class FileDataReader implements DataReader{
         this.filePath = filePath;
     }
 
-    public void readData(DataStorage dataStorage) throws IOException {
+    public void startReading(DataStorage dataStorage) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
