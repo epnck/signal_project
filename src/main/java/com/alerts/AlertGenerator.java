@@ -48,6 +48,7 @@ public class AlertGenerator {
         BloodPressureMonitor bloodPressureMonitor = new BloodPressureMonitor();
         BloodSaturationMonitor bloodSaturationMonitor = new BloodSaturationMonitor();
         HypotensiveHypoxemiaMonitor hypotensiveHypoxemiaMonitor = new HypotensiveHypoxemiaMonitor();
+        EcgMonitor ecgMonitor = new EcgMonitor();
 
 
         for (PatientRecord record : patientRecords){
@@ -68,20 +69,29 @@ public class AlertGenerator {
                     hypotensiveHypoxemiaMonitor.validateData(record);
                     break;
                 case "ECG":
-
+                    ecgMonitor.validateData(record);
+                    break;
             }
 
+            //check for hypotensive hypoxemia alert
             if(hypotensiveHypoxemiaMonitor.getState() == HypotensiveHypoxemiaMonitor.State.HH_ALERT){
-                triggerAlert(new Alert(patientID, " Hypotensive Hypoxemia Alert", timeStamp));
+                triggerAlert(new Alert(patientID, "Hypotensive Hypoxemia Alert", timeStamp));
                 //reset all relevant states to prevent sending already dealt with errors
                 bloodPressureMonitor.resetState();
                 bloodSaturationMonitor.resetState();
                 hypotensiveHypoxemiaMonitor.resetState();;
-                break;
+                break; //no need to go over other alerts, since each added record can only trigger one alert
+            }
+
+            //check for ecg alers
+            if(ecgMonitor.getState() == EcgMonitor.State.ECG_ALERT){
+                triggerAlert(new Alert(patientID, "ECG Peak Alert", timeStamp));
+                ecgMonitor.resetState();
+                break; //no need to go over other alerts, since each added record can only trigger one alert
             }
 
 
-
+            //check for blood pressure alerts
             switch (bloodPressureMonitor.getState()) {
                 case TREND_ALERT:
                     triggerAlert(new Alert(patientID, "Blood Pressure Trend Alert", timeStamp));
@@ -93,6 +103,7 @@ public class AlertGenerator {
                     break;
             }
 
+            //check for blood saturation alerts
             switch (bloodSaturationMonitor.getState()){
                 case LOW_SATURATION_ALERT:
                     triggerAlert(new Alert(patientID, "Low Blood Saturation Alert", timeStamp));
@@ -103,6 +114,7 @@ public class AlertGenerator {
                     bloodSaturationMonitor.resetState();
                     break;
             }
+
 
 
 
