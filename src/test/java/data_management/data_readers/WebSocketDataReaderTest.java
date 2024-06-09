@@ -99,7 +99,7 @@ class WebSocketDataReaderTest {
 
     @Test
     void testProcessMessageValidData() throws IOException, InterruptedException, URISyntaxException {
-        DataStorage dataStorage = new DataStorage();
+        DataStorage dataStorage = DataStorage.getInstance();
         WebSocketDataReader reader = new WebSocketDataReader(8080);
 
         //set up a test WebSocket client
@@ -120,7 +120,7 @@ class WebSocketDataReaderTest {
 
     @Test
     void testProcessMessageInvalidData() throws IOException, URISyntaxException {
-        DataStorage dataStorage = new DataStorage();
+        DataStorage dataStorage = DataStorage.getInstance();
         WebSocketDataReader reader = new WebSocketDataReader(8080);
 
         //set up a test WebSocket client
@@ -140,7 +140,7 @@ class WebSocketDataReaderTest {
 
     @Test
     void testProcessMessagePartialData() throws IOException, URISyntaxException {
-        DataStorage dataStorage = new DataStorage();
+        DataStorage dataStorage = DataStorage.getInstance();
         WebSocketDataReader reader = new WebSocketDataReader(8080);
 
         //set up a test WebSocket client
