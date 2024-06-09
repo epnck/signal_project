@@ -136,7 +136,8 @@ public class AlertGenerator {
 
         //everything before the current end time has been check
         //update start time for next method call
-        startTime = endTime;
+        //commented out for testing
+        //startTime = endTime;
     }
 
 

@@ -6,8 +6,7 @@ import com.data_management.Patient;
 import com.data_management.PatientRecord;
 import org.junit.Assert;
 import org.junit.Test;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class AlertGeneratorTest {
 
@@ -25,38 +24,38 @@ public class AlertGeneratorTest {
         Patient readingsMixed = new Patient(7);
 
         //add systolic pressure increase records
-        readingsSystolicIncrease.addRecord(110, "SystolicPressure", System.currentTimeMillis() - 20000);
-        readingsSystolicIncrease.addRecord(121, "SystolicPressure", System.currentTimeMillis() - 10000);
+        readingsSystolicIncrease.addRecord(110, "SystolicPressure", System.currentTimeMillis());
+        readingsSystolicIncrease.addRecord(121, "SystolicPressure", System.currentTimeMillis());
         readingsSystolicIncrease.addRecord(132, "SystolicPressure", System.currentTimeMillis());
 
         //add systolic pressure decrease records
-        readingsSystolicDecrease.addRecord(130, "SystolicPressure", System.currentTimeMillis() - 20000);
-        readingsSystolicDecrease.addRecord(119, "SystolicPressure", System.currentTimeMillis() - 10000);
+        readingsSystolicDecrease.addRecord(130, "SystolicPressure", System.currentTimeMillis());
+        readingsSystolicDecrease.addRecord(119, "SystolicPressure", System.currentTimeMillis());
         readingsSystolicDecrease.addRecord(108, "SystolicPressure", System.currentTimeMillis());
 
         //add systolic pressure normal records
-        readingsSystolicNormal.addRecord(110, "SystolicPressure", System.currentTimeMillis() - 20000);
-        readingsSystolicNormal.addRecord(120, "SystolicPressure", System.currentTimeMillis() - 10000);
+        readingsSystolicNormal.addRecord(110, "SystolicPressure", System.currentTimeMillis());
+        readingsSystolicNormal.addRecord(120, "SystolicPressure", System.currentTimeMillis());
         readingsSystolicNormal.addRecord(110, "SystolicPressure", System.currentTimeMillis());
 
         //add diastolic pressure increase records
-        readingsDiastolicIncrease.addRecord(90, "DiastolicPressure", System.currentTimeMillis() - 20000);
-        readingsDiastolicIncrease.addRecord(101, "DiastolicPressure", System.currentTimeMillis() - 10000);
+        readingsDiastolicIncrease.addRecord(90, "DiastolicPressure", System.currentTimeMillis());
+        readingsDiastolicIncrease.addRecord(101, "DiastolicPressure", System.currentTimeMillis());
         readingsDiastolicIncrease.addRecord(112, "DiastolicPressure", System.currentTimeMillis());
 
         //add diastolic pressure decrease records
-        readingsDiastolicDecrease.addRecord(110, "DiastolicPressure", System.currentTimeMillis() - 20000);
-        readingsDiastolicDecrease.addRecord(99, "DiastolicPressure", System.currentTimeMillis() - 10000);
+        readingsDiastolicDecrease.addRecord(110, "DiastolicPressure", System.currentTimeMillis());
+        readingsDiastolicDecrease.addRecord(99, "DiastolicPressure", System.currentTimeMillis());
         readingsDiastolicDecrease.addRecord(88, "DiastolicPressure", System.currentTimeMillis());
 
         //add diastolic pressure normal records
-        readingsDiastolicNormal.addRecord(100, "DiastolicPressure", System.currentTimeMillis() - 20000);
-        readingsDiastolicNormal.addRecord(110, "DiastolicPressure", System.currentTimeMillis() - 10000);
+        readingsDiastolicNormal.addRecord(100, "DiastolicPressure", System.currentTimeMillis());
+        readingsDiastolicNormal.addRecord(110, "DiastolicPressure", System.currentTimeMillis());
         readingsDiastolicNormal.addRecord(100, "DiastolicPressure", System.currentTimeMillis());
 
         //add mixed pressure records
-        readingsMixed.addRecord(89, "DiastolicPressure", System.currentTimeMillis() - 20000);
-        readingsMixed.addRecord(100, "SystolicPressure", System.currentTimeMillis() - 10000);
+        readingsMixed.addRecord(89, "DiastolicPressure", System.currentTimeMillis());
+        readingsMixed.addRecord(100, "SystolicPressure", System.currentTimeMillis());
         readingsMixed.addRecord(111, "DiastolicPressure", System.currentTimeMillis());
 
         //test and evaluate all scenarios

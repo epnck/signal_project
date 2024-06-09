@@ -63,7 +63,7 @@ public class BloodPressureMonitor implements HealthDataMonitor{
         int size = bloodPressureReading.size();;
 
         //no need to check trend if there are less than 3 data points
-        if (size < 2) {
+        if (size <= 2) {
             return;
         }
 

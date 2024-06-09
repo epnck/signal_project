@@ -26,9 +26,6 @@ public class BloodSaturationMonitor implements HealthDataMonitor{
         long currentTimestamp = patientRecord.getTimestamp();
         bloodSaturationRecords.add(patientRecord);
 
-        //previous data
-        double previousBloodSaturation =  bloodSaturationRecords.get(bloodSaturationRecords.size() -2).getMeasurementValue();
-        long previousTimestamp =  bloodSaturationRecords.get(bloodSaturationRecords.size() -2).getTimestamp();
 
         //if blood saturation is below the threshold trigger an alert
         if(currentBloodSaturation < 92){
@@ -38,7 +35,12 @@ public class BloodSaturationMonitor implements HealthDataMonitor{
 
         //if blood saturation drops 5% or more in a 10-minute window, trigger an alert
         if(bloodSaturationRecords.size() >= 2){
-            if(currentBloodSaturation - previousBloodSaturation <= -5 && currentTimestamp - previousTimestamp <= 10){
+            //previous data
+            double previousBloodSaturation =  bloodSaturationRecords.get(bloodSaturationRecords.size() -2).getMeasurementValue();
+            long previousTimestamp =  bloodSaturationRecords.get(bloodSaturationRecords.size() -2).getTimestamp();
+
+
+            if(currentBloodSaturation - previousBloodSaturation <= -5 && currentTimestamp - previousTimestamp <= 600000){ //time in milliseconds so 600000-milliseconds is 10-minutes
                state = State.RAPID_DROP_ALERT;
             }
         }

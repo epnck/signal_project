@@ -2,6 +2,7 @@ package com.monitors;
 
 import com.data_management.PatientRecord;
 
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class EcgMonitor implements HealthDataMonitor {
@@ -10,7 +11,7 @@ public class EcgMonitor implements HealthDataMonitor {
         ECG_ALERT,
     }
     private State state = State.NORMAL;
-    private Queue<Double> readings;
+    private Queue<Double> readings = new PriorityQueue<>();
     private double sum = 0;
 
     public EcgMonitor(){
@@ -21,7 +22,7 @@ public class EcgMonitor implements HealthDataMonitor {
     public void validateData(PatientRecord patientRecord) {
         //assuming readings are sent every minute, so one hour worht of data;
         int windowSize = 60;
-        if (readings.size() == windowSize) {
+        if (!readings.isEmpty() && readings.size() == windowSize) {
                 sum -= readings.poll(); //remove the earliest data from the window
             }
 
@@ -32,7 +33,7 @@ public class EcgMonitor implements HealthDataMonitor {
 
             double average = sum / readings.size();
 
-            if (ecgData > average * 1.2) { //assuming peak is defined as 20% higher than average
+            if (ecgData > average * 1.15) { //assuming peak is defined as 15% higher than average
                state = State.ECG_ALERT;
             }
     }
