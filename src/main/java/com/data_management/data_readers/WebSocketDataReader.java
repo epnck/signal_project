@@ -1,5 +1,6 @@
-package com.data_management;
+package com.data_management.data_readers;
 
+import com.data_management.DataStorage;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -9,6 +10,7 @@ import java.io.IOException;
 
 public class WebSocketDataReader implements DataReader {
     private final int port;
+
 
     public WebSocketDataReader(int port){
         this.port = port;
