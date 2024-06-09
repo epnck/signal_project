@@ -56,10 +56,10 @@ public class AlertGenerator {
         hypoTriggered = false;
         ecgTriggerd = false;
 
-        BloodPressureMonitor bloodPressureMonitor = new BloodPressureMonitor();
-        BloodSaturationMonitor bloodSaturationMonitor = new BloodSaturationMonitor();
-        HypotensiveHypoxemiaMonitor hypotensiveHypoxemiaMonitor = new HypotensiveHypoxemiaMonitor();
-        EcgMonitor ecgMonitor = new EcgMonitor();
+        BloodPressureStrategy bloodPressureMonitor = new BloodPressureStrategy();
+        BloodSaturationStrategy bloodSaturationMonitor = new BloodSaturationStrategy();
+        HypotensiveHypoxemiaStrategy hypotensiveHypoxemiaMonitor = new HypotensiveHypoxemiaStrategy();
+        EcgStrategy ecgMonitor = new EcgStrategy();
 
 
         for (PatientRecord record : patientRecords){
@@ -69,23 +69,23 @@ public class AlertGenerator {
             switch (record.getRecordType()) {
                 //data generated with the blood pressure generator is categorized under diastolic and systolic, not under the general label "blood pressure"
                 case "DiastolicPressure":
-                    bloodPressureMonitor.validateData(record);
+                    bloodPressureMonitor.checkAlert(record);
                     break;
                 case "SystolicPressure":
-                    bloodPressureMonitor.validateData(record);
-                    hypotensiveHypoxemiaMonitor.validateData(record);
+                    bloodPressureMonitor.checkAlert(record);
+                    hypotensiveHypoxemiaMonitor.checkAlert(record);
                     break;
                 case "BloodSaturation":
-                    bloodSaturationMonitor.validateData(record);
-                    hypotensiveHypoxemiaMonitor.validateData(record);
+                    bloodSaturationMonitor.checkAlert(record);
+                    hypotensiveHypoxemiaMonitor.checkAlert(record);
                     break;
                 case "ECG":
-                    ecgMonitor.validateData(record);
+                    ecgMonitor.checkAlert(record);
                     break;
             }
 
             //check for hypotensive hypoxemia alert
-            if(hypotensiveHypoxemiaMonitor.getState() == HypotensiveHypoxemiaMonitor.State.HH_ALERT){
+            if(hypotensiveHypoxemiaMonitor.getState() == HypotensiveHypoxemiaStrategy.State.HH_ALERT){
                 triggerAlert(new Alert(patientID, "Hypotensive Hypoxemia Alert", timeStamp));
                 hypoTriggered = true;
 
@@ -97,7 +97,7 @@ public class AlertGenerator {
             }
 
             //check for ecg alers
-            if(ecgMonitor.getState() == EcgMonitor.State.ECG_ALERT){
+            if(ecgMonitor.getState() == EcgStrategy.State.ECG_ALERT){
                 triggerAlert(new Alert(patientID, "ECG Peak Alert", timeStamp));
                 ecgTriggerd = true;
                 ecgMonitor.resetState();

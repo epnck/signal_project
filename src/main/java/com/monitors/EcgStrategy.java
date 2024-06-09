@@ -5,7 +5,7 @@ import com.data_management.PatientRecord;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class EcgMonitor implements HealthDataMonitor {
+public class EcgStrategy implements AlertStrategy {
     public enum State{
         NORMAL,
         ECG_ALERT,
@@ -14,12 +14,12 @@ public class EcgMonitor implements HealthDataMonitor {
     private Queue<Double> readings = new PriorityQueue<>();
     private double sum = 0;
 
-    public EcgMonitor(){
+    public EcgStrategy(){
     }
 
 
     @Override
-    public void validateData(PatientRecord patientRecord) {
+    public void checkAlert(PatientRecord patientRecord) {
         //assuming readings are sent every minute, so one hour worht of data;
         int windowSize = 60;
         if (!readings.isEmpty() && readings.size() == windowSize) {

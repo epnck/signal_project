@@ -4,7 +4,7 @@ import com.data_management.PatientRecord;
 
 
 
-public class HypotensiveHypoxemiaMonitor implements HealthDataMonitor {
+public class HypotensiveHypoxemiaStrategy implements AlertStrategy {
     public enum State{
         NORMAL,
         HH_ALERT,
@@ -14,12 +14,12 @@ public class HypotensiveHypoxemiaMonitor implements HealthDataMonitor {
     private double currentSystolicPressure = -1;
     private double currentBloodSaturation = -1;
 
-    public HypotensiveHypoxemiaMonitor(){
+    public HypotensiveHypoxemiaStrategy(){
 
     }
 
     @Override
-    public void validateData(PatientRecord patientRecord) {
+    public void checkAlert(PatientRecord patientRecord) {
         if(patientRecord.getRecordType().equals("SystolicPressure")){
             currentSystolicPressure = patientRecord.getMeasurementValue();
         }else{

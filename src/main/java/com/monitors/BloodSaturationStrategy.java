@@ -5,22 +5,22 @@ import com.data_management.PatientRecord;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BloodSaturationMonitor implements HealthDataMonitor{
+public class BloodSaturationStrategy implements AlertStrategy {
     public enum State{
         NORMAL,
         LOW_SATURATION_ALERT,
         RAPID_DROP_ALERT,
 
     }
-    private BloodSaturationMonitor.State state = BloodSaturationMonitor.State.NORMAL;
+    private BloodSaturationStrategy.State state = BloodSaturationStrategy.State.NORMAL;
 
     List<PatientRecord> bloodSaturationRecords = new ArrayList<>();
-    public BloodSaturationMonitor(){
+    public BloodSaturationStrategy(){
 
     }
 
     @Override
-    public void validateData(PatientRecord patientRecord) {
+    public void checkAlert(PatientRecord patientRecord) {
         //current data
         double currentBloodSaturation = patientRecord.getMeasurementValue();
         long currentTimestamp = patientRecord.getTimestamp();
@@ -46,12 +46,12 @@ public class BloodSaturationMonitor implements HealthDataMonitor{
         }
     }
 
-    public BloodSaturationMonitor.State getState(){
+    public BloodSaturationStrategy.State getState(){
         return state;
     }
 
     public void resetState(){
-        state = BloodSaturationMonitor.State.NORMAL;
+        state = BloodSaturationStrategy.State.NORMAL;
     }
 }
 
