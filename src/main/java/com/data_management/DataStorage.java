@@ -20,12 +20,21 @@ public class DataStorage {
     //concurrent map works better to ensure thread-safe access to patient records
     private ConcurrentMap<Integer, Patient> patientMap;; // Stores patient objects indexed by their unique patient ID.
 
-    /**
-     * Constructs a new instance of DataStorage, initializing the underlying storage
-     * structure.
-     */
-    public DataStorage() {
+
+    //the single instance of the class
+    private static DataStorage instance;
+
+    //private constructor
+    private DataStorage() {
         this.patientMap = new ConcurrentHashMap<>();
+    }
+
+    //static instance
+    public static synchronized DataStorage getInstance() {
+        if (instance == null) {
+            instance = new DataStorage();
+        }
+        return instance;
     }
 
     /**
@@ -91,7 +100,7 @@ public class DataStorage {
     public static void main(String[] args) throws IOException {
 
         DataReader reader = new FileDataReader("path/to/data");
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
 
         reader.startReading(storage);
 

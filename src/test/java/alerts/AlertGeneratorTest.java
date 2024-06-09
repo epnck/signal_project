@@ -11,7 +11,7 @@ public class AlertGeneratorTest {
 
     @Test
     public void checkTrendBloodPressure(){
-        var mock = new AlertGenerator(new DataStorage());
+        var mock = new AlertGenerator(DataStorage.getInstance());
 
         //initialize test patients
         Patient readingsSystolicIncrease = new Patient(1);
@@ -81,7 +81,7 @@ public class AlertGeneratorTest {
     }
     @Test
     public void checkCriticalBloodpressure(){
-        var mock = new AlertGenerator(new DataStorage());
+        var mock = new AlertGenerator(DataStorage.getInstance());
         Patient systolicIncrease = new Patient(1);
         Patient systolicDecrease = new Patient(2);
         Patient diastolicIncrease = new Patient(3);
@@ -121,7 +121,7 @@ public class AlertGeneratorTest {
     }
     @Test
     public void checkBloodSaturation(){
-        var mock = new AlertGenerator(new DataStorage());
+        var mock = new AlertGenerator(DataStorage.getInstance());
         Patient normal = new Patient(1);
         Patient belowThreshold = new Patient(2);
         Patient edgeCase = new Patient(3);
@@ -142,7 +142,7 @@ public class AlertGeneratorTest {
     }
     @Test
     public void checkBloodSaturationRapidDrop(){
-        var mock = new AlertGenerator(new DataStorage());
+        var mock = new AlertGenerator(DataStorage.getInstance());
         Patient patient1 = new Patient(1);
         Patient patient2 = new Patient(2);
         Patient patient3 = new Patient(3);
@@ -170,7 +170,7 @@ public class AlertGeneratorTest {
     }
     @Test
     public void checkHypotensiveHypoxemiaAlert(){
-        var mock = new AlertGenerator(new DataStorage());
+        var mock = new AlertGenerator(DataStorage.getInstance());
         Patient patient1 = new Patient(1);
         Patient patient2 = new Patient(2);
         Patient patient3 = new Patient(3);
@@ -198,7 +198,7 @@ public class AlertGeneratorTest {
     }
     @Test
     public void checkEcg(){
-        var mock = new AlertGenerator(new DataStorage());
+        var mock = new AlertGenerator(DataStorage.getInstance());
         Patient patient = new Patient(1);
 
         patient.addRecord(85, "ECG", System.currentTimeMillis());

@@ -19,7 +19,7 @@ class DataStorageTest {
     void testAddAndGetRecords() throws IOException {
         // TODO Perhaps you can implement a mock data reader to mock the test data?
         DataReader reader = new FileDataReader("path/to/data");
-        DataStorage storage = new DataStorage();
+        DataStorage storage = DataStorage.getInstance();
         reader.startReading(storage);
 
         storage.addPatientData(1, 100.0, "WhiteBloodCells", 1714376789050L);
