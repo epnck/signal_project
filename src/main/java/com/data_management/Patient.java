@@ -3,6 +3,7 @@ package com.data_management;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Represents a patient and manages their medical records.
  * This class stores patient-specific data, allowing for the addition and
@@ -56,7 +57,14 @@ public class Patient {
      *         range
      */
     public List<PatientRecord> getRecords(long startTime, long endTime) {
-        // TODO Implement and test this method
-        return null;
+        List<PatientRecord> timedRecords = new ArrayList<>();
+
+        for (PatientRecord record : this.patientRecords) {
+            if (record.getTimestamp() >= startTime && record.getTimestamp() <= endTime) {
+                timedRecords.add(record);
+            }
+
+        }
+        return timedRecords;
     }
 }
