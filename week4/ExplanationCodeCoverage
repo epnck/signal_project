@@ -1,0 +1,4 @@
+With the unit tests the only lines not covered are in the EcgMonitor when the number of records surpasses the window size.
+Since the window size is currently set to 60, and test cases only have a length of 3, the lines adjusting the window are not tested.
+Additionally, not all possible cases of the blood pressure increase and decrease trend are tested, 6 out of 8 cases are tested.
+These tests should be implemented in the future to further test the reliability of the code.
