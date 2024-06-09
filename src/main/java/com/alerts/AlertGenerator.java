@@ -5,6 +5,7 @@ import com.data_management.Patient;
 import com.data_management.PatientRecord;
 import com.monitors.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ import java.util.List;
 public class AlertGenerator {
     private DataStorage dataStorage;
     private long startTime = 0;
+    private List<Alert> alertLog = new ArrayList<>();
 
     /**
      * Constructs an {@code AlertGenerator} with a specified {@code DataStorage}.
@@ -114,12 +116,11 @@ public class AlertGenerator {
                     bloodSaturationMonitor.resetState();
                     break;
             }
-
-
-
-
-
         }
+
+        //everything before the current end time has been check
+        //update start time for next method call
+        startTime = endTime;
     }
 
 
@@ -133,7 +134,8 @@ public class AlertGenerator {
      * @param alert the alert object containing details about the alert condition
      */
     private void triggerAlert(Alert alert) {
-        // Implementation might involve logging the alert or notifying staff
+        alertLog.add(alert);
+        System.out.println("Alert for Patient "+alert.getPatientId()+": "+alert.getCondition()+" at: "+alert.getTimestamp()+"!!ALERT!!");
     }
 
 }
