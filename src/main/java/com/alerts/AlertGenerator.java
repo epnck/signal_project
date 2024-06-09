@@ -18,6 +18,10 @@ public class AlertGenerator {
     private DataStorage dataStorage;
     private long startTime = 0;
     private List<Alert> alertLog = new ArrayList<>();
+    public boolean bloodPressureTriggerd = false;
+    public boolean bloodSaturationTriggered = false;
+    public boolean hypoTriggered = false; //hypotensive hypoxemia
+    public boolean ecgTriggerd = false;
 
     /**
      * Constructs an {@code AlertGenerator} with a specified {@code DataStorage}.
@@ -46,6 +50,11 @@ public class AlertGenerator {
         List<PatientRecord> patientRecords = patient.getRecords(startTime, endTime);
         String patientID = Integer.toString(patient.getPatientId());
 
+        //for testing
+        bloodPressureTriggerd = false;
+        bloodSaturationTriggered = false;
+        hypoTriggered = false;
+        ecgTriggerd = false;
 
         BloodPressureMonitor bloodPressureMonitor = new BloodPressureMonitor();
         BloodSaturationMonitor bloodSaturationMonitor = new BloodSaturationMonitor();
@@ -78,6 +87,8 @@ public class AlertGenerator {
             //check for hypotensive hypoxemia alert
             if(hypotensiveHypoxemiaMonitor.getState() == HypotensiveHypoxemiaMonitor.State.HH_ALERT){
                 triggerAlert(new Alert(patientID, "Hypotensive Hypoxemia Alert", timeStamp));
+                hypoTriggered = true;
+
                 //reset all relevant states to prevent sending already dealt with errors
                 bloodPressureMonitor.resetState();
                 bloodSaturationMonitor.resetState();
@@ -88,6 +99,7 @@ public class AlertGenerator {
             //check for ecg alers
             if(ecgMonitor.getState() == EcgMonitor.State.ECG_ALERT){
                 triggerAlert(new Alert(patientID, "ECG Peak Alert", timeStamp));
+                ecgTriggerd = true;
                 ecgMonitor.resetState();
                 break; //no need to go over other alerts, since each added record can only trigger one alert
             }
@@ -98,9 +110,11 @@ public class AlertGenerator {
                 case TREND_ALERT:
                     triggerAlert(new Alert(patientID, "Blood Pressure Trend Alert", timeStamp));
                     bloodPressureMonitor.resetState();
+                    bloodPressureTriggerd = true;
                     break;
                 case CRITICAL_ALERT:
                     triggerAlert(new Alert(patientID, "Blood Pressure Critical Threshold Surpassed", timeStamp));
+                    bloodPressureTriggerd = true;
                     bloodPressureMonitor.resetState();
                     break;
             }
@@ -109,10 +123,12 @@ public class AlertGenerator {
             switch (bloodSaturationMonitor.getState()){
                 case LOW_SATURATION_ALERT:
                     triggerAlert(new Alert(patientID, "Low Blood Saturation Alert", timeStamp));
+                    bloodSaturationTriggered = true;
                     bloodSaturationMonitor.resetState();
                     break;
                 case RAPID_DROP_ALERT:
                     triggerAlert(new Alert(patientID, "Rapid Drop in Blood Saturation Alert", timeStamp));
+                    bloodSaturationTriggered = true;
                     bloodSaturationMonitor.resetState();
                     break;
             }
