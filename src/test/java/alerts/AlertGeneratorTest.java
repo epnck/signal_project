@@ -3,7 +3,6 @@ package alerts;
 import com.alerts.AlertGenerator;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
-import com.data_management.PatientRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -144,13 +143,30 @@ public class AlertGeneratorTest {
     @Test
     public void checkBloodSaturationRapidDrop(){
         var mock = new AlertGenerator(new DataStorage());
-        Patient patient = new Patient(1);
+        Patient patient1 = new Patient(1);
+        Patient patient2 = new Patient(2);
+        Patient patient3 = new Patient(3);
 
-        patient.addRecord(99, "BloodSaturation", System.currentTimeMillis() - 500000);
-        patient.addRecord(93, "BloodSaturation", System.currentTimeMillis());
+        //rapid drop within timeframe
+        patient1.addRecord(99, "BloodSaturation", System.currentTimeMillis() - 500000);
+        patient1.addRecord(93, "BloodSaturation", System.currentTimeMillis());
 
-        mock.evaluateData(patient);
+        //rapid drop outside timeframe
+        patient2.addRecord(99, "BloodSaturation", System.currentTimeMillis() - 700000);
+        patient2.addRecord(93, "BloodSaturation", System.currentTimeMillis());
+
+        //normal data within timeframe
+        patient3.addRecord(99, "BloodSaturation", System.currentTimeMillis() - 500000);
+        patient3.addRecord(97, "BloodSaturation", System.currentTimeMillis());
+
+        mock.evaluateData(patient1);
         Assert.assertTrue(mock.bloodSaturationTriggered);
+
+        mock.evaluateData(patient2);
+        Assert.assertFalse(mock.bloodSaturationTriggered);
+
+        mock.evaluateData(patient3);
+        Assert.assertFalse(mock.bloodSaturationTriggered);
     }
     @Test
     public void checkHypotensiveHypoxemiaAlert(){
@@ -181,7 +197,7 @@ public class AlertGeneratorTest {
         Assert.assertFalse(mock.hypoTriggered);
     }
     @Test
-    public void checkIfEcgIsAbnormal(){
+    public void checkEcg(){
         var mock = new AlertGenerator(new DataStorage());
         Patient patient = new Patient(1);
 
