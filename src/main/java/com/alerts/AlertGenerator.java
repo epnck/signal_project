@@ -71,6 +71,15 @@ public class AlertGenerator {
 
             }
 
+            if(hypotensiveHypoxemiaMonitor.getState() == HypotensiveHypoxemiaMonitor.State.HH_ALERT){
+                triggerAlert(new Alert(patientID, " Hypotensive Hypoxemia Alert", timeStamp));
+                //reset all relevant states to prevent sending already dealt with errors
+                bloodPressureMonitor.resetState();
+                bloodSaturationMonitor.resetState();
+                hypotensiveHypoxemiaMonitor.resetState();;
+                break;
+            }
+
 
 
             switch (bloodPressureMonitor.getState()) {
