@@ -1,7 +1,10 @@
 package com.monitors;
 
+import com.alerts.Alert;
+import com.alerts.alert_factories.BloodPressureAlertFactory;
 import com.data_management.PatientRecord;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class BloodPressureStrategy implements AlertStrategy {
     private State state = State.NORMAL;
     List<Double> diastolicReadings = new ArrayList<>();
     List<Double> systolicReadings = new ArrayList<>();
+    private Alert alert;
 
 
     public BloodPressureStrategy(){
@@ -23,13 +27,31 @@ public class BloodPressureStrategy implements AlertStrategy {
 
 
     @Override
-    public void checkAlert(PatientRecord patientRecord) {
+    public boolean checkAlert(PatientRecord patientRecord) {
+        //reset alert for each time method is called
+        alert = null;
+
         if(patientRecord.getRecordType().equals("DiastolicPressure")){
             monitorDiastolicPressure(patientRecord);
         }else{
             monitorSystolicPressure(patientRecord);
         }
 
+        //check if any alerts are triggered and create them
+        if(state == State.TREND_ALERT){
+            alert = new BloodPressureAlertFactory().createAlert(Integer.toString(patientRecord.getPatientId()),
+                    "Trend Alert", patientRecord.getTimestamp());
+            resetState();
+            return true;
+        } else if (state == State.CRITICAL_ALERT) {
+            alert = new BloodPressureAlertFactory().createAlert(Integer.toString(patientRecord.getPatientId()),
+                    "Critical Threshold Surpassed", patientRecord.getTimestamp());
+            resetState();
+            return true;
+        }
+
+        //no alerts triggered so return false
+        return false;
     }
 
 
@@ -83,6 +105,9 @@ public class BloodPressureStrategy implements AlertStrategy {
 
     }
 
+    public Alert getAlert(){
+        return alert;
+    }
 
     public State getState(){
         return state;

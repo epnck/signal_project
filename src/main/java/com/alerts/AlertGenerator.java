@@ -1,5 +1,9 @@
 package com.alerts;
 
+import com.alerts.alert_factories.BloodPressureAlertFactory;
+import com.alerts.alert_factories.BloodSaturationAlertFactory;
+import com.alerts.alert_factories.EcgAlertFactory;
+import com.alerts.alert_factories.HypotensiveHypoxemiaAlertFactory;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
 import com.data_management.PatientRecord;
@@ -56,10 +60,17 @@ public class AlertGenerator {
         hypoTriggered = false;
         ecgTriggerd = false;
 
+        //strategies
         BloodPressureStrategy bloodPressureMonitor = new BloodPressureStrategy();
         BloodSaturationStrategy bloodSaturationMonitor = new BloodSaturationStrategy();
         HypotensiveHypoxemiaStrategy hypotensiveHypoxemiaMonitor = new HypotensiveHypoxemiaStrategy();
         EcgStrategy ecgMonitor = new EcgStrategy();
+
+        //factories
+        BloodPressureAlertFactory bloodPressureAlertFactory = new BloodPressureAlertFactory();
+        BloodSaturationAlertFactory bloodSaturationAlertFactory = new BloodSaturationAlertFactory();
+        HypotensiveHypoxemiaAlertFactory hypotensiveHypoxemiaAlertFactory = new HypotensiveHypoxemiaAlertFactory();
+        EcgAlertFactory ecgAlertFactory = new EcgAlertFactory();
 
 
         for (PatientRecord record : patientRecords){
@@ -69,21 +80,49 @@ public class AlertGenerator {
             switch (record.getRecordType()) {
                 //data generated with the blood pressure generator is categorized under diastolic and systolic, not under the general label "blood pressure"
                 case "DiastolicPressure":
-                    bloodPressureMonitor.checkAlert(record);
+                    if(bloodPressureMonitor.checkAlert(record)){
+                       triggerAlert(bloodPressureMonitor.getAlert());
+                       bloodPressureTriggerd = true;
+                    }
                     break;
                 case "SystolicPressure":
-                    bloodPressureMonitor.checkAlert(record);
-                    hypotensiveHypoxemiaMonitor.checkAlert(record);
+                    if(hypotensiveHypoxemiaMonitor.checkAlert(record)){
+                        triggerAlert(hypotensiveHypoxemiaMonitor.getAlert());
+                        hypoTriggered = true;
+                        //combined alerts have priority, so dont trigger individual alert
+                        //but the record should still be logged
+                        bloodPressureMonitor.checkAlert(record);
+                        break;
+                    }
+                    if(bloodPressureMonitor.checkAlert(record)){
+                        triggerAlert(bloodPressureMonitor.getAlert());
+                        bloodPressureTriggerd = true;
+                    }
                     break;
                 case "BloodSaturation":
-                    bloodSaturationMonitor.checkAlert(record);
-                    hypotensiveHypoxemiaMonitor.checkAlert(record);
+                    if(hypotensiveHypoxemiaMonitor.checkAlert(record)){
+                        triggerAlert(hypotensiveHypoxemiaMonitor.getAlert());
+                        hypoTriggered = true;
+                        //combined alerts have priority, so dont trigger individual alert
+                        //but the record should still be logged
+                        bloodPressureMonitor.checkAlert(record);
+                        break;
+                    }
+                    if(bloodSaturationMonitor.checkAlert(record)){
+                        triggerAlert(bloodSaturationMonitor.getAlert());
+                        bloodSaturationTriggered = true;
+                    }
                     break;
                 case "ECG":
-                    ecgMonitor.checkAlert(record);
+                    if(ecgMonitor.checkAlert(record)){
+                        triggerAlert(ecgMonitor.getAlert());
+                        ecgTriggerd = true;
+                    }
                     break;
             }
 
+
+            /* commented out for facotory and strategy pattern implementation
             //check for hypotensive hypoxemia alert
             if(hypotensiveHypoxemiaMonitor.getState() == HypotensiveHypoxemiaStrategy.State.HH_ALERT){
                 triggerAlert(new Alert(patientID, "Hypotensive Hypoxemia Alert", timeStamp));
@@ -132,6 +171,9 @@ public class AlertGenerator {
                     bloodSaturationMonitor.resetState();
                     break;
             }
+
+             */
+
         }
 
         //everything before the current end time has been check
